@@ -29,7 +29,10 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Account> account = new ArrayList<Account>();
+    private List<Account> accounts = new ArrayList<Account>();
+
+    @OneToMany(mappedBy = "user")
+    private List<CreditCard> creditCards = new ArrayList<CreditCard>();
 
     public User() {
         this.uuid = UUID.randomUUID();

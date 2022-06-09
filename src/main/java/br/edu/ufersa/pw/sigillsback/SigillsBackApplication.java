@@ -40,8 +40,9 @@ public class SigillsBackApplication {
 			users.forEach(currentUser -> System.out.println(currentUser.getEmail()));
 		};
 	}
-	
-	public ModelMapper mepper (){
+
+	@Bean
+	public ModelMapper mapper() {
 		return new ModelMapper();
 	}
 

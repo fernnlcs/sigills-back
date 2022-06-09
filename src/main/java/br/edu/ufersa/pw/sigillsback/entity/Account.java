@@ -1,6 +1,8 @@
 package br.edu.ufersa.pw.sigillsback.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ public class Account {
 
     private String name;
 
+    @Enumerated(EnumType.ORDINAL)
     private AccountType type;
 
     public Long getId() {

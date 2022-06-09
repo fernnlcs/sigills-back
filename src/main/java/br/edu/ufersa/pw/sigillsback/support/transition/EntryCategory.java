@@ -4,7 +4,7 @@ public enum EntryCategory {
     OUTRO("outro"),
     SALDO_INICIAL("saldo inicial"),
     SALARIO("salario"),
-    EMPRESTADO("salario");
+    EMPRESTADO("emprestado");
 
     private final String description;
 

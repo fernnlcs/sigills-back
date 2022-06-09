@@ -3,6 +3,8 @@ package br.edu.ufersa.pw.sigillsback.entity.transition;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.edu.ufersa.pw.sigillsback.entity.Account;
+import br.edu.ufersa.pw.sigillsback.support.transition.EntryCategory;
 
 @Entity
 @Table(name = "entries")
@@ -22,6 +25,9 @@ public class Entry {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Account account;
+
+    @Enumerated(EnumType.ORDINAL)
+    private EntryCategory category;
 
     private Double value;
 
@@ -43,6 +49,14 @@ public class Entry {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public EntryCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(EntryCategory category) {
+        this.category = category;
     }
 
     public Double getValue() {

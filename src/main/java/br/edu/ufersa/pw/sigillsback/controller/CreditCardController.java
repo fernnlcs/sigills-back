@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
-import br.edu.ufersa.pw.sigillsback.entity.Account;
-import br.edu.ufersa.pw.sigillsback.repository.AccountRepository;
-import br.edu.ufersa.pw.sigillsback.service.AccountService;
+import br.edu.ufersa.pw.sigillsback.DTO.CreditCardDto;
+import br.edu.ufersa.pw.sigillsback.entity.CreditCard;
+import br.edu.ufersa.pw.sigillsback.repository.CreditCardRepository;
+import br.edu.ufersa.pw.sigillsback.service.CreditCardService;
 
 @RestController
-@RequestMapping("/account")
-public class AccountController {
+@RequestMapping("/creditCard")
+public class CreditCardController {
 
-    AccountRepository repository;
+    CreditCardRepository repository;
     @Autowired
-    AccountService service;
+    CreditCardService service;
 
     @GetMapping("search/byName")
-    public AccountDto getByName(@Param("name") String name){
+    public CreditCardDto getByName(@Param("name") String name){
         return service.findByName(name);
     }
 
     @PostMapping
-    public ResponseEntity<AccountDto> save(@Valid @RequestBody Account account){
-        AccountDto dto = service.save(account);
+    public ResponseEntity<CreditCardDto> save(@Valid @RequestBody CreditCard creditCard){
+        CreditCardDto dto = service.save(creditCard);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -45,7 +45,7 @@ public class AccountController {
 
     @DeleteMapping(value = "/{name}")
     public ResponseEntity<String> deleteByName(@PathVariable String name){
-        AccountDto dto = new AccountDto();
+        CreditCardDto dto = new CreditCardDto();
         dto.setName(name);
 
         try {

@@ -35,7 +35,7 @@ public class AccountService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteByEmail(AccountDto account){
+    public void deleteByName(AccountDto account){
         repository.deleteByName(account.getName());
     }
     

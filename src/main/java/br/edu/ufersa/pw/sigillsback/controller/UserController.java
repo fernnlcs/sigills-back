@@ -1,5 +1,7 @@
 package br.edu.ufersa.pw.sigillsback.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> save(@RequestBody User user){
+    public ResponseEntity<UserDto> save(@Valid @RequestBody User user){
         UserDto dto = service.save(user);
 
         if (dto == null) {

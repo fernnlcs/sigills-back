@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -21,11 +24,16 @@ public class User {
     
     private UUID uuid;
 
+    @NotBlank(message = "O nome não pode ficar em branco.")
     private String name;
 
     @Column(unique = true)
+    @NotBlank(message = "O e-mail não pode ficar em branco.")
+    @Email(message = "Digite um e-mail válido.")
     private String email;
 
+    @NotBlank(message = "A senha não pode ficar em branco.")
+    @Size(min = 6, max = 20, message = "Digite uma senha entre 6 e 20 caracteres.")
     private String password;
 
     @OneToMany(mappedBy = "user")

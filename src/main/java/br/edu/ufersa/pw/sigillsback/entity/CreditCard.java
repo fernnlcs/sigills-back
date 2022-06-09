@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "credit_cards")
@@ -17,8 +18,10 @@ public class CreditCard {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotBlank(message = "De quem é esse cartão?")
     private User user;
 
+    @NotBlank(message = "O nome não pode ficar em branco.")
     private String name;
 
     private int closingDate;

@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import br.edu.ufersa.pw.sigillsback.entity.transition.Entry;
 import br.edu.ufersa.pw.sigillsback.entity.transition.Exit;
@@ -28,12 +29,14 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotBlank(message = "De quem é essa conta?")
     private User user;
 
+    @NotBlank(message = "O nome não pode ficar em branco.")
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
-    private AccountType type;
+    private AccountType type = AccountType.CORRENTE;
 
     @OneToMany(mappedBy = "account")
     private List<Entry> entries = new ArrayList<Entry>();

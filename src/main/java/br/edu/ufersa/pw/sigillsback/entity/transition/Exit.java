@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import br.edu.ufersa.pw.sigillsback.entity.Account;
 import br.edu.ufersa.pw.sigillsback.support.transition.ExitCategory;
@@ -24,13 +25,16 @@ public class Exit {
 
     @ManyToOne
     @JoinColumn(name = "account_id")
+    @NotBlank(message = "Em qual conta a saída aconteceu?")
     private Account account;
 
     @Enumerated(EnumType.ORDINAL)
-    private ExitCategory category;
+    private ExitCategory category = ExitCategory.OUTRO;
 
+    @NotBlank(message = "Digite um valor válido.")
     private Double value;
 
+    @NotBlank(message = "Quando a saída aconteceu?")
     private Calendar date;
 
     private String description;

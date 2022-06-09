@@ -2,6 +2,7 @@ package br.edu.ufersa.pw.sigillsback.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class UserService {
 
     @Autowired
     private ModelMapper mapper;
+    
 
     public UserDto findByEmail(String email){
         User user = repository.findByEmail(email);
@@ -28,7 +30,7 @@ public class UserService {
     public UserDto save(User users){
         User user = new User();
         user.setEmail(users.getEmail());
-        user.setPassword(users.getPassword());
+        user.setPassword((new BCryptPasswordEncoder()).encode(users.getPassword()));
         user.setName(users.getName());
 
         return mapper.map(repository.save(user),UserDto.class);

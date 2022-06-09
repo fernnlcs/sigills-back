@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.modelmapper.ModelMapper;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -38,6 +39,10 @@ public class SigillsBackApplication {
 
 			users.forEach(currentUser -> System.out.println(currentUser.getEmail()));
 		};
+	}
+	
+	public ModelMapper mepper (){
+		return new ModelMapper();
 	}
 
 }

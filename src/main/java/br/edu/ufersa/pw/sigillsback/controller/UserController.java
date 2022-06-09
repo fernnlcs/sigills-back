@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @GetMapping("saerch/byEmail")
+    @GetMapping("search/byEmail")
     public UserDto getByEmail(@Param("email") String email){
         return service.findByEmail(email);
     }

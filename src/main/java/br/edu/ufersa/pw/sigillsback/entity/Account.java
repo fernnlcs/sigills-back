@@ -1,5 +1,8 @@
 package br.edu.ufersa.pw.sigillsback.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,8 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.edu.ufersa.pw.sigillsback.entity.transition.Entry;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Exit;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Transfer;
 import br.edu.ufersa.pw.sigillsback.support.AccountType;
 
 @Entity
@@ -27,6 +34,18 @@ public class Account {
 
     @Enumerated(EnumType.ORDINAL)
     private AccountType type;
+
+    @OneToMany(mappedBy = "account")
+    private List<Entry> entries = new ArrayList<Entry>();
+    
+    @OneToMany(mappedBy = "account")
+    private List<Exit> exits = new ArrayList<Exit>();
+    
+    @OneToMany(mappedBy = "origin")
+    private List<Transfer> transfersOut = new ArrayList<Transfer>();
+    
+    @OneToMany(mappedBy = "destiny")
+    private List<Transfer> transfersIn = new ArrayList<Transfer>();
 
     public Long getId() {
         return id;

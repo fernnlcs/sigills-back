@@ -27,21 +27,6 @@ public class SigillsBackApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner() {
-		return args -> {
-			User user = new User();
-			user.setName("Example");
-			user.setEmail("user@example.com");
-			user.setPassword("password");
-			this.userRepo.save(user);
-
-			List<User> users = this.userRepo.findAll();
-
-			users.forEach(currentUser -> System.out.println(currentUser.getEmail()));
-		};
-	}
-
-	@Bean
 	public ModelMapper mapper() {
 		return new ModelMapper();
 	}

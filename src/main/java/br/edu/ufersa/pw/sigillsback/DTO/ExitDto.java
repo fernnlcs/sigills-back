@@ -2,17 +2,25 @@ package br.edu.ufersa.pw.sigillsback.DTO;
 
 import java.util.Calendar;
 
-import br.edu.ufersa.pw.sigillsback.support.transition.EntryCategory;
+import br.edu.ufersa.pw.sigillsback.entity.Account;
+import br.edu.ufersa.pw.sigillsback.support.transition.ExitCategory;
 
 public class ExitDto {
     
+    private Account account;
     private Long id;
     private Double value;
     private Calendar date;
     private String description;
-    private EntryCategory category = EntryCategory.OUTRO;
+    private ExitCategory category = ExitCategory.OUTRO;
     
     
+    public Account getAccount() {
+        return account;
+    }
+    public void setAccount(Account account) {
+        this.account = account;
+    }
     public Long getId() {
         return id;
     }
@@ -37,13 +45,11 @@ public class ExitDto {
     public void setDescription(String description) {
         this.description = description;
     }
-    public EntryCategory getCategory() {
+    public ExitCategory getCategory() {
         return category;
     }
-    public void setCategory(EntryCategory category) {
+    public void setCategory(ExitCategory category) {
         this.category = category;
     }
-
-
-
+    
 }

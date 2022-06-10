@@ -1,5 +1,8 @@
 package br.edu.ufersa.pw.sigillsback.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +19,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.pw.sigillsback.DTO.CreditCardDto;
 import br.edu.ufersa.pw.sigillsback.entity.CreditCard;
-import br.edu.ufersa.pw.sigillsback.repository.CreditCardRepository;
 import br.edu.ufersa.pw.sigillsback.service.CreditCardService;
 
 @RestController
 @RequestMapping("/creditCard")
 public class CreditCardController {
 
-    CreditCardRepository repository;
     @Autowired
     CreditCardService service;
 
-    @GetMapping("search/byName")
-    public CreditCardDto getByName(@Param("name") String name){
-        return service.findByName(name);
+    @GetMapping
+    public List<CreditCardDto> findAll(){
+        return service.findAll();
+    }
+
+    @GetMapping("search/byId")
+    public ResponseEntity<CreditCardDto> getById(@Param("id") String id){
+        Optional<CreditCardDto> creditCard = service.findById(id);
+        
+        if (creditCard.isPresent()){
+            return ResponseEntity.ok(creditCard.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PostMapping
@@ -43,14 +56,14 @@ public class CreditCardController {
         }
     }
 
-    @DeleteMapping(value = "/{name}")
-    public ResponseEntity<String> deleteByName(@PathVariable String name){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Long> deleteById(@PathVariable Long id){
         CreditCardDto dto = new CreditCardDto();
-        dto.setName(name);
+        dto.setId(id);
 
         try {
             service.deleteByName(dto);
-            return new ResponseEntity<>(name, HttpStatus.OK);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

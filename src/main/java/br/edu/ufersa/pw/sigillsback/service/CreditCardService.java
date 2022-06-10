@@ -1,5 +1,9 @@
 package br.edu.ufersa.pw.sigillsback.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +23,22 @@ public class CreditCardService {
     @Autowired
     private ModelMapper mapper;
 
-    public CreditCardDto findByName(String name){
-        CreditCard creditCard = repository.findByName(name);
-        return mapper.map(creditCard,CreditCardDto.class);
+    public List<CreditCardDto> findAll(){
+        List<CreditCardDto> list = new ArrayList<CreditCardDto>();
+
+        for (CreditCard creditCard : repository.findAll()){
+            list.add(mapper.map(creditCard, CreditCardDto.class));
+        }
+        
+        return list;
+    }
+
+    public Optional<CreditCardDto> findById(String id){
+        Optional<CreditCard> creditCard = repository.findById(Long.valueOf(id));
+        if (creditCard.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of( mapper.map(creditCard.get(),CreditCardDto.class));
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -36,7 +53,7 @@ public class CreditCardService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteByName(CreditCardDto creditCard){
-        repository.deleteByName(creditCard.getName());
+        repository.deleteById(creditCard.getId());
     }
     
 }

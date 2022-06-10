@@ -23,12 +23,12 @@ public class AccountService {
     @Autowired
     private ModelMapper mapper;
 
-    public List<AccountDto> listarTodos() {
+    public List<AccountDto> findAll() {
         List<AccountDto> list = new ArrayList<AccountDto>();
         
-            for (Account account : repository.findAll()) {
-                list.add(mapper.map(account,AccountDto.class));
-            }
+        for (Account account : repository.findAll()) {
+            list.add(mapper.map(account,AccountDto.class));
+        }
     
         return list;
       }

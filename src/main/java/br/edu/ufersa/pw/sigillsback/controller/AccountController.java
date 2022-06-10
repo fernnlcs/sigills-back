@@ -29,8 +29,8 @@ public class AccountController {
     AccountService service;
     
     @GetMapping
-    public List<AccountDto> listar() {
-    return service.listarTodos();
+    public List<AccountDto> findAll() {
+    return service.findAll();
   }
 
 

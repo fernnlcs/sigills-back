@@ -1,13 +1,19 @@
 package br.edu.ufersa.pw.sigillsback.DTO;
 
-import br.edu.ufersa.pw.sigillsback.entity.User;
 import br.edu.ufersa.pw.sigillsback.support.AccountType;
 
 public class AccountDto {
 
+    private Long id;
     private String name;
-    private AccountType type; 
-    private User user;
+    private AccountType type;
+    
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -20,12 +26,10 @@ public class AccountDto {
     public void setType(AccountType type) {
         this.type = type;
     }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public boolean isPresent() {
+        return false;
+    } 
+    
 
     
     

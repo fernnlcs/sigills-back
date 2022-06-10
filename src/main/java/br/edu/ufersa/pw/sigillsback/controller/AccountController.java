@@ -1,5 +1,8 @@
 package br.edu.ufersa.pw.sigillsback.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +19,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
 import br.edu.ufersa.pw.sigillsback.entity.Account;
-import br.edu.ufersa.pw.sigillsback.repository.AccountRepository;
 import br.edu.ufersa.pw.sigillsback.service.AccountService;
 
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
-    AccountRepository repository;
     @Autowired
     AccountService service;
+    
+    @GetMapping
+    public List<AccountDto> listar() {
+    return service.listarTodos();
+  }
 
-    @GetMapping("search/byName")
-    public AccountDto getByName(@Param("name") String name){
-        return service.findByName(name);
+
+    @GetMapping("search/byId")
+    public ResponseEntity<AccountDto> getById(@Param("id") String id) {
+    Optional<AccountDto> account = service.findById(id);
+    
+    if (account.isPresent()){
+        return ResponseEntity.ok(account.get());
+    }else{
+        return ResponseEntity.badRequest().build();
     }
-
+      
+  }
+    
     @PostMapping
     public ResponseEntity<AccountDto> save(@Valid @RequestBody Account account){
         AccountDto dto = service.save(account);
@@ -43,14 +57,14 @@ public class AccountController {
         }
     }
 
-    @DeleteMapping(value = "/{name}")
-    public ResponseEntity<String> deleteByName(@PathVariable String name){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Long> deleteByName(@PathVariable Long id){
         AccountDto dto = new AccountDto();
-        dto.setName(name);
+        dto.setId(id);
 
         try {
-            service.deleteByName(dto);
-            return new ResponseEntity<>(name, HttpStatus.OK);
+            service.deleteById(dto);
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

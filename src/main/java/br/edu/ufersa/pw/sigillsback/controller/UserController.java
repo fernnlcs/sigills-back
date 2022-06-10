@@ -1,5 +1,7 @@
 package br.edu.ufersa.pw.sigillsback.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufersa.pw.sigillsback.DTO.CreatedUserDto;
 import br.edu.ufersa.pw.sigillsback.DTO.UserDto;
 import br.edu.ufersa.pw.sigillsback.entity.User;
 import br.edu.ufersa.pw.sigillsback.repository.UserRepository;
@@ -31,6 +35,17 @@ public class UserController {
     public UserDto getByEmail(@Param("email") String email){
         return service.findByEmail(email);
     }
+
+    @GetMapping("/{uuid}")
+        public ResponseEntity<UserDto> getByUuid(@PathVariable String uuid) {
+        Optional<UserDto> user = service.findByUuid(uuid);
+        
+        if (user.isPresent()){
+            return ResponseEntity.ok(user.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+  }
 
     @PostMapping
     public ResponseEntity<UserDto> save(@Valid @RequestBody User user){
@@ -55,4 +70,14 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{uuid}")
+        public ResponseEntity<UserDto> atualizar(@PathVariable String uuid, @RequestBody CreatedUserDto dto) {
+            Optional<UserDto> compromisso = service.atualizar(uuid, dto);
+            if (compromisso.isPresent())
+                return ResponseEntity.ok(compromisso.get());
+            else
+                return ResponseEntity.badRequest().build();
+  }
+
 }

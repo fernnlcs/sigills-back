@@ -29,7 +29,6 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotBlank(message = "De quem é essa conta?")
     private User user;
 
     @NotBlank(message = "O nome não pode ficar em branco.")

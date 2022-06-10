@@ -2,15 +2,31 @@ package br.edu.ufersa.pw.sigillsback.DTO;
 
 import java.util.Calendar;
 
+import br.edu.ufersa.pw.sigillsback.entity.Account;
 import br.edu.ufersa.pw.sigillsback.support.transition.EntryCategory;
 
 public class EntryDto {
     
+    private Long id;
+    private Account account;
     private Double value;
     private Calendar date;
     private String description;
     private EntryCategory category = EntryCategory.OUTRO;
     
+
+    public Account getAccount() {
+        return account;
+    }
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public Double getValue() {
         return value;
     }

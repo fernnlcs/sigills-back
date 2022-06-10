@@ -42,11 +42,10 @@ public class CreditCardController {
         }else{
             return ResponseEntity.badRequest().build();
         }
-
     }
 
     @PostMapping
-    public ResponseEntity<CreditCardDto> save(@Valid @RequestBody CreditCard creditCard){
+    public ResponseEntity<CreditCardDto> add(@Valid @RequestBody CreditCard creditCard){
         CreditCardDto dto = service.save(creditCard);
 
         if (dto == null) {

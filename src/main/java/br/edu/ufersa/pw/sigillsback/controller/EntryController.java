@@ -6,47 +6,47 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
-import br.edu.ufersa.pw.sigillsback.entity.Account;
-import br.edu.ufersa.pw.sigillsback.service.AccountService;
+import br.edu.ufersa.pw.sigillsback.DTO.EntryDto;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Entry;
+import br.edu.ufersa.pw.sigillsback.service.EntryService;
 
 @RestController
-@RequestMapping("/account")
-public class AccountController {
-
-    @Autowired
-    AccountService service;
+@RequestMapping("/entry")
+public class EntryController{
     
+    @Autowired
+    private EntryService service;
+
     @GetMapping
-    public List<AccountDto> findAll() {
+    public List<EntryDto> findAll(){
         return service.findAll();
     }
 
-    @GetMapping("search/byId")
-    public ResponseEntity<AccountDto> getById(@Param("id") String id) {
-        Optional<AccountDto> account = service.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<EntryDto> getById(@PathVariable String id) {
+    Optional<EntryDto> user = service.findById(id);
     
-        if (account.isPresent()){
-            return ResponseEntity.ok(account.get());
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+    if (user.isPresent()){
+        return ResponseEntity.ok(user.get());
+    }else{
+        return ResponseEntity.badRequest().build();
     }
-    
+}
+
     @PostMapping
-    public ResponseEntity<AccountDto> add(@Valid @RequestBody Account account){
-        AccountDto dto = service.save(account);
+    public ResponseEntity<EntryDto> add(@Valid @RequestBody Entry entry){
+        EntryDto dto = service.add(entry);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,9 +55,19 @@ public class AccountController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EntryDto> update(@PathVariable String uuid, @RequestBody EntryDto dto) {
+        Optional<EntryDto> compromisso = service.update(uuid, dto);
+        if (compromisso.isPresent()){
+            return ResponseEntity.ok(compromisso.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> deleteById(@PathVariable Long id){
-        AccountDto dto = new AccountDto();
+        EntryDto dto = new EntryDto();
         dto.setId(id);
 
         try {
@@ -67,4 +77,5 @@ public class AccountController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
 }

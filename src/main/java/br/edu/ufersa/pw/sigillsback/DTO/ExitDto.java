@@ -6,11 +6,19 @@ import br.edu.ufersa.pw.sigillsback.support.transition.EntryCategory;
 
 public class ExitDto {
     
+    private Long id;
     private Double value;
     private Calendar date;
     private String description;
     private EntryCategory category = EntryCategory.OUTRO;
     
+    
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public Double getValue() {
         return value;
     }

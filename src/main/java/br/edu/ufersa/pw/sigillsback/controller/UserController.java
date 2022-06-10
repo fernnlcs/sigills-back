@@ -45,10 +45,10 @@ public class UserController {
         }else{
             return ResponseEntity.badRequest().build();
         }
-  }
+    }
 
     @PostMapping
-    public ResponseEntity<UserDto> save(@Valid @RequestBody User user){
+    public ResponseEntity<UserDto> add(@Valid @RequestBody User user){
         UserDto dto = service.save(user);
 
         if (dto == null) {
@@ -72,12 +72,13 @@ public class UserController {
     }
 
     @PutMapping("/{uuid}")
-        public ResponseEntity<UserDto> atualizar(@PathVariable String uuid, @RequestBody CreatedUserDto dto) {
-            Optional<UserDto> compromisso = service.atualizar(uuid, dto);
-            if (compromisso.isPresent())
-                return ResponseEntity.ok(compromisso.get());
-            else
-                return ResponseEntity.badRequest().build();
-  }
+    public ResponseEntity<UserDto> update(@PathVariable String uuid, @RequestBody CreatedUserDto dto) {
+        Optional<UserDto> compromisso = service.update(uuid, dto);
+        if (compromisso.isPresent()){
+            return ResponseEntity.ok(compromisso.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 }

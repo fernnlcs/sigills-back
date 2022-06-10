@@ -36,7 +36,6 @@ public class UserService {
         return Optional.of(mapper.map(user.get(),UserDto.class));
     }
 
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public UserDto save(User users){
         User user = new User();
@@ -47,12 +46,7 @@ public class UserService {
         return mapper.map(repository.save(user),UserDto.class);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteByEmail(UserDto user){
-        repository.deleteByEmail(user.getEmail());
-    }
-
-    public Optional<UserDto> atualizar(String uuid, CreatedUserDto dto) {
+    public Optional<UserDto> update(String uuid, CreatedUserDto dto) {
         Optional<User> user = repository.findByUuid(UUID.fromString(uuid));
         if (user.isEmpty()) {
           return Optional.empty();
@@ -62,8 +56,11 @@ public class UserService {
         user.get().setPassword(dto.getPassword());
     
         return Optional.of(mapper.map(repository.save(user.get()), UserDto.class));
-      }
+    }
 
-   
-    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteByEmail(UserDto user){
+        repository.deleteByEmail(user.getEmail());
+    }
+
 }

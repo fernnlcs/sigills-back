@@ -73,9 +73,9 @@ public class UserController {
 
     @PutMapping("/{uuid}")
     public ResponseEntity<UserDto> update(@PathVariable String uuid, @RequestBody CreatedUserDto dto) {
-        Optional<UserDto> compromisso = service.update(uuid, dto);
-        if (compromisso.isPresent()){
-            return ResponseEntity.ok(compromisso.get());
+        Optional<UserDto> user = service.update(uuid, dto);
+        if (user.isPresent()){
+            return ResponseEntity.ok(user.get());
         }else{
             return ResponseEntity.badRequest().build();
         }

@@ -8,11 +8,12 @@ import br.edu.ufersa.pw.sigillsback.support.transition.EntryCategory;
 public class EntryDto {
     
     private Long id;
-    private Account account;
     private Double value;
     private Calendar date;
     private String description;
     private EntryCategory category = EntryCategory.OUTRO;
+    private Account account;
+
     
 
     public Account getAccount() {

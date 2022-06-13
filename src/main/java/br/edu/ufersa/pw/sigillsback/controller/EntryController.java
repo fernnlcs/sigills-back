@@ -56,10 +56,10 @@ public class EntryController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntryDto> update(@PathVariable String uuid, @RequestBody EntryDto dto) {
-        Optional<EntryDto> compromisso = service.update(uuid, dto);
-        if (compromisso.isPresent()){
-            return ResponseEntity.ok(compromisso.get());
+    public ResponseEntity<EntryDto> update(@PathVariable String id, @RequestBody EntryDto dto) {
+        Optional<EntryDto> entry= service.update(id, dto);
+        if (entry.isPresent()){
+            return ResponseEntity.ok(entry.get());
         }else{
             return ResponseEntity.badRequest().build();
         }

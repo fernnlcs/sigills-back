@@ -39,7 +39,6 @@ public class EntryService {
         return Optional.of( mapper.map(entry.get(),EntryDto.class));
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public EntryDto add(Entry entry){
         Entry card = new Entry();
         card.setAccount(entry.getAccount());
@@ -49,11 +48,6 @@ public class EntryService {
         card.setValue(entry.getValue());
         
         return mapper.map(repository.save(card),EntryDto.class);
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteById(EntryDto entry){
-        repository.deleteById(entry.getId());
     }
 
     public Optional<EntryDto> update(String id, EntryDto dto) {
@@ -72,7 +66,8 @@ public class EntryService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteByEmail(EntryDto entry){
+    public void deleteById(EntryDto entry){
         repository.deleteById(entry.getId());
     }
+    
 }

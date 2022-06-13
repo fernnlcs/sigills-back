@@ -39,7 +39,6 @@ public class ExitService {
         return Optional.of( mapper.map(exit.get(),ExitDto.class));
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ExitDto add(Exit exit){
         Exit card = new Exit();
         card.setAccount(exit.getAccount());
@@ -49,11 +48,6 @@ public class ExitService {
         card.setValue(exit.getValue());
         
         return mapper.map(repository.save(card),ExitDto.class);
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteById(ExitDto exit){
-        repository.deleteById(exit.getId());
     }
 
     public Optional<ExitDto> update(String id, ExitDto dto) {
@@ -69,6 +63,11 @@ public class ExitService {
         exit.get().setValue(dto.getValue());
 
         return Optional.of(mapper.map(repository.save(exit.get()), ExitDto.class));
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteById(ExitDto exit){
+        repository.deleteById(exit.getId());
     }
 
 }

@@ -7,12 +7,13 @@ import br.edu.ufersa.pw.sigillsback.support.transition.ExitCategory;
 
 public class ExitDto {
     
-    private Account account;
     private Long id;
     private Double value;
     private Calendar date;
     private String description;
     private ExitCategory category = ExitCategory.OUTRO;
+    private Account account;
+
     
     
     public Account getAccount() {

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import br.edu.ufersa.pw.sigillsback.entity.Account;
 
@@ -22,18 +22,18 @@ public class Transfer {
 
     @ManyToOne
     @JoinColumn(name = "origin_id")
-    @NotBlank(message = "Qual é a conta de origem?")
+    @NotNull(message = "Qual é a conta de origem?")
     private Account origin;
 
     @ManyToOne
     @JoinColumn(name = "destiny_id")
-    @NotBlank(message = "Qual é a conta de destino?")
+    @NotNull(message = "Qual é a conta de destino?")
     private Account destiny;
 
-    @NotBlank(message = "Digite um valor válido.")
+    @NotNull(message = "Digite um valor válido.")
     private Double value;
 
-    @NotBlank(message = "Quando a transferência aconteceu?")
+    @NotNull(message = "Quando a transferência aconteceu?")
     private Calendar date;
 
     private String description;

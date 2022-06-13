@@ -2,7 +2,6 @@ package br.edu.ufersa.pw.sigillsback.DTO;
 
 import java.util.Calendar;
 
-
 public class TransferDto {
     
     private Double value;
@@ -27,11 +26,5 @@ public class TransferDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    
-    
-    
-     
-
 
 }

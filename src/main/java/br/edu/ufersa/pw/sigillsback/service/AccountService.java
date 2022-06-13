@@ -41,15 +41,26 @@ public class AccountService {
         return Optional.of(mapper.map(account.get(),AccountDto.class));
     }
 
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public AccountDto save(Account account){
+    public AccountDto add(Account account){
         Account accoun = new Account();
         accoun.setName(account.getName());
         accoun.setType(account.getType());
         accoun.setUser(account.getUser());
         
         return mapper.map(repository.save(accoun),AccountDto.class);
+    }
+
+    public Optional<AccountDto> update(String id, Account accountReceived){
+        Optional<Account> account = repository.findById(Long.valueOf(id));
+        if (account.isEmpty()) {
+          return Optional.empty();
+        }
+    
+        account.get().setName(accountReceived.getName());
+        account.get().setType(accountReceived.getType());
+    
+        return Optional.of(mapper.map(repository.save(account.get()), AccountDto.class));
+
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

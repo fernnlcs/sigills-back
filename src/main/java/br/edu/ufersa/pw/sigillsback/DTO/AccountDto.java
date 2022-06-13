@@ -7,7 +7,15 @@ public class AccountDto {
     private Long id;
     private String name;
     private AccountType type;
+    private UserDto user;
+
     
+    public UserDto getUser() {
+        return user;
+    }
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
     public Long getId() {
         return id;
     }

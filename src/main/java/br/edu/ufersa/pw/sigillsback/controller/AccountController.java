@@ -6,13 +6,13 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +33,8 @@ public class AccountController {
         return service.findAll();
     }
 
-    @GetMapping("search/byId")
-    public ResponseEntity<AccountDto> getById(@Param("id") String id) {
+    @GetMapping("search/byId/{id}")
+    public ResponseEntity<AccountDto> getById(@PathVariable String id) {
         Optional<AccountDto> account = service.findById(id);
     
         if (account.isPresent()){
@@ -46,7 +46,7 @@ public class AccountController {
     
     @PostMapping
     public ResponseEntity<AccountDto> add(@Valid @RequestBody Account account){
-        AccountDto dto = service.save(account);
+        AccountDto dto = service.add(account);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,6 +54,17 @@ public class AccountController {
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AccountDto> update(@PathVariable String id, @RequestBody Account accountReceived) {
+        Optional<AccountDto> account = service.update(id, accountReceived);
+        if (account.isPresent()){
+            return ResponseEntity.ok(account.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> deleteById(@PathVariable Long id){

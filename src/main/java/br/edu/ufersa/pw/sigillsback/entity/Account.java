@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import br.edu.ufersa.pw.sigillsback.entity.transition.Entry;
 import br.edu.ufersa.pw.sigillsback.entity.transition.Exit;
@@ -29,6 +30,7 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull(message = "A quem pertence essa conta?")
     private User user;
 
     @NotBlank(message = "O nome não pode ficar em branco.")
@@ -105,4 +107,7 @@ public class Account {
             return false;
         return true;
     }
+
+
+    
 }

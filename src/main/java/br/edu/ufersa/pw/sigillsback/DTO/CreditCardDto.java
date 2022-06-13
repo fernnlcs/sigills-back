@@ -1,15 +1,14 @@
 package br.edu.ufersa.pw.sigillsback.DTO;
 
-import br.edu.ufersa.pw.sigillsback.entity.User;
 
 public class CreditCardDto {
 
     private Long id;
     private String name;
-    private User user;
-    private int closeDate;
-    private int dueDate;
-
+    private int dueDate;    
+    private int closingDate;
+    private UserDto user;
+    
     public Long getId() {
         return id;
     }
@@ -22,25 +21,25 @@ public class CreditCardDto {
     public void setName(String name) {
         this.name = name;
     }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public int getCloseDate() {
-        return closeDate;
-    }
-    public void setCloseDate(int closeDate) {
-        this.closeDate = closeDate;
-    }
     public int getDueDate() {
         return dueDate;
     }
     public void setDueDate(int dueDate) {
         this.dueDate = dueDate;
     }
+    public int getClosingDate() {
+        return closingDate;
+    }
+    public void setClosingDate(int closingDate) {
+        this.closingDate = closingDate;
+    }
+    public UserDto getUser() {
+        return user;
+    }
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
 
-    
+        
     
 }

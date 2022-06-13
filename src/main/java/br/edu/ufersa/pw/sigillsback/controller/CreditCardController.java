@@ -6,13 +6,13 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +33,8 @@ public class CreditCardController {
         return service.findAll();
     }
 
-    @GetMapping("search/byId")
-    public ResponseEntity<CreditCardDto> getById(@Param("id") String id){
+    @GetMapping("search/byId/{id}")
+    public ResponseEntity<CreditCardDto> getById(@PathVariable String id){
         Optional<CreditCardDto> creditCard = service.findById(id);
         
         if (creditCard.isPresent()){
@@ -46,13 +46,25 @@ public class CreditCardController {
 
     @PostMapping
     public ResponseEntity<CreditCardDto> add(@Valid @RequestBody CreditCard creditCard){
-        CreditCardDto dto = service.save(creditCard);
+        CreditCardDto dto = service.add(creditCard);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }else{
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CreditCardDto> update(@PathVariable String id, @RequestBody CreditCard creditCardReceived){
+        Optional<CreditCardDto> credit_Card = service.update(id, creditCardReceived);
+        
+        if (credit_Card.isPresent()){
+            return ResponseEntity.ok(credit_Card.get());
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @DeleteMapping(value = "/{id}")

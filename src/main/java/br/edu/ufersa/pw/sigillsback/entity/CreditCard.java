@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 @Entity
 @Table(name = "credit_cards")
@@ -18,7 +20,7 @@ public class CreditCard {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotBlank(message = "De quem é esse cartão?")
+    @NotNull(message = "De quem é esse cartão?")
     private User user;
 
     @NotBlank(message = "O nome não pode ficar em branco.")

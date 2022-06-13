@@ -8,9 +8,15 @@ public class CreatedUserDto {
     private String email;
     private String name;
     private String password;
+    private UserDto user;
 
     
-    
+    public UserDto getUser() {
+        return user;
+    }
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
     public String getPassword() {
         return password;
     }

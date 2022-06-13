@@ -41,14 +41,27 @@ public class CreditCardService {
         return Optional.of( mapper.map(creditCard.get(),CreditCardDto.class));
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public CreditCardDto save(CreditCard creditCard){
+    public CreditCardDto add(CreditCard creditCard){
         CreditCard card = new CreditCard();
         card.setName(creditCard.getName());
         card.setUser(creditCard.getUser());
         card.setDueDate(creditCard.getDueDate());
         card.setClosingDate(creditCard.getClosingDate());
         return mapper.map(repository.save(card),CreditCardDto.class);
+    }
+
+    public Optional<CreditCardDto> update(String id, CreditCard creditCardReceived){
+        Optional<CreditCard> credit_card = repository.findById(Long.valueOf(id));
+
+        if (credit_card.isEmpty()) {
+            return Optional.empty();
+        }
+
+        credit_card.get().setName(creditCardReceived.getName());
+        credit_card.get().setDueDate(creditCardReceived.getDueDate());
+        credit_card.get().setClosingDate(creditCardReceived.getClosingDate());
+
+        return Optional.of(mapper.map(repository.save(credit_card.get()),CreditCardDto.class));
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

@@ -28,8 +28,9 @@ public class CreditCardService {
 
     public List<CreditCardDto> findAll(){
         List<CreditCardDto> list = new ArrayList<CreditCardDto>();
+        List<CreditCard> userCards = repository.findByUser(userService.currentUser());
 
-        for (CreditCard creditCard : repository.findAll()){
+        for (CreditCard creditCard : userCards){
             list.add(mapper.map(creditCard, CreditCardDto.class));
         }
         

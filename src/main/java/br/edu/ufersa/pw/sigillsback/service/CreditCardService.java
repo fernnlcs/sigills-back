@@ -21,6 +21,9 @@ public class CreditCardService {
     private CreditCardRepository repository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ModelMapper mapper;
 
     public List<CreditCardDto> findAll(){
@@ -44,7 +47,7 @@ public class CreditCardService {
     public CreditCardDto add(CreditCard creditCard){
         CreditCard card = new CreditCard();
         card.setName(creditCard.getName());
-        card.setUser(creditCard.getUser());
+        card.setUser(userService.currentUser());
         card.setDueDate(creditCard.getDueDate());
         card.setClosingDate(creditCard.getClosingDate());
         return mapper.map(repository.save(card),CreditCardDto.class);

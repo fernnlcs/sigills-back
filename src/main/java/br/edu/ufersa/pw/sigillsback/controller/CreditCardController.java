@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufersa.pw.sigillsback.DTO.CreateCreditCardDto;
 import br.edu.ufersa.pw.sigillsback.DTO.CreditCardDto;
 import br.edu.ufersa.pw.sigillsback.entity.CreditCard;
 import br.edu.ufersa.pw.sigillsback.service.CreditCardService;
@@ -45,8 +46,14 @@ public class CreditCardController {
     }
 
     @PostMapping
-    public ResponseEntity<CreditCardDto> add(@Valid @RequestBody CreditCard creditCard){
-        CreditCardDto dto = service.add(creditCard);
+    public ResponseEntity<CreditCardDto> add(@Valid @RequestBody CreateCreditCardDto creditCard){
+
+        CreditCard entity = new CreditCard();
+        entity.setName(creditCard.getName());
+        entity.setClosingDate(creditCard.getClosingDate());
+        entity.setDueDate(creditCard.getDueDate());
+
+        CreditCardDto dto = service.add(entity);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

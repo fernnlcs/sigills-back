@@ -44,7 +44,7 @@ public class AccountController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     @PostMapping
     public ResponseEntity<AccountDto> add(@Valid @RequestBody CreateAccountDto account){
 

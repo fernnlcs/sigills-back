@@ -12,7 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
 import br.edu.ufersa.pw.sigillsback.entity.Account;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Entry;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Exit;
+import br.edu.ufersa.pw.sigillsback.entity.transition.Transfer;
 import br.edu.ufersa.pw.sigillsback.repository.AccountRepository;
+import br.edu.ufersa.pw.sigillsback.repository.transition.EntryRepository;
+import br.edu.ufersa.pw.sigillsback.repository.transition.ExitRepository;
+import br.edu.ufersa.pw.sigillsback.repository.transition.TransferRepository;
 
 @Service
 public class AccountService {
@@ -24,6 +30,15 @@ public class AccountService {
     private UserService userService;
 
     @Autowired
+    private EntryRepository entryRepository;
+
+    @Autowired
+    private ExitRepository exitRepository;
+
+    @Autowired
+    private TransferRepository transferRepository;
+
+    @Autowired
     private ModelMapper mapper;
 
     public List<AccountDto> findAll() {
@@ -31,7 +46,9 @@ public class AccountService {
         List<Account> userAccounts = repository.findByUser(userService.currentUser());
 
         for (Account account : userAccounts) {
-            list.add(mapper.map(account, AccountDto.class));
+            AccountDto partial = mapper.map(account, AccountDto.class);
+            partial.setBalance(this.balance(account));
+            list.add(partial);
         }
 
         return list;
@@ -42,7 +59,31 @@ public class AccountService {
         if (account.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(mapper.map(account.get(), AccountDto.class));
+        Optional<AccountDto> result = Optional.of(mapper.map(account.get(), AccountDto.class));
+        result.get().setBalance(this.balance(account.get()));
+        return result;
+    }
+
+    public double balance(Account account) {
+        double result = 0;
+
+        for (Entry entry : entryRepository.findByAccount(account)) {
+            result += entry.getValue();
+        }
+
+        for (Exit exit : exitRepository.findByAccount(account)) {
+            result -= exit.getValue();
+        }
+
+        for (Transfer transferIn : transferRepository.findByDestiny(account)) {
+            result += transferIn.getValue();
+        }
+
+        for (Transfer transferOut : transferRepository.findByOrigin(account)) {
+            result -= transferOut.getValue();
+        }
+
+        return result;
     }
 
     public AccountDto add(Account account) {

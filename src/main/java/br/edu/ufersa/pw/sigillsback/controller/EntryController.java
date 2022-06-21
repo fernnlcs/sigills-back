@@ -23,50 +23,50 @@ import br.edu.ufersa.pw.sigillsback.service.EntryService;
 
 @RestController
 @RequestMapping("/entry")
-public class EntryController{
-    
+public class EntryController {
+
     @Autowired
     private EntryService service;
 
     @GetMapping
-    public List<EntryDto> findAll(){
+    public List<EntryDto> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntryDto> getById(@PathVariable String id) {
-    Optional<EntryDto> user = service.findById(id);
-    
-    if (user.isPresent()){
-        return ResponseEntity.ok(user.get());
-    }else{
-        return ResponseEntity.badRequest().build();
+        Optional<EntryDto> user = service.findById(id);
+
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
-}
 
     @PostMapping
-    public ResponseEntity<EntryDto> add(@Valid @RequestBody Entry entry){
+    public ResponseEntity<EntryDto> add(@Valid @RequestBody Entry entry) {
         EntryDto dto = service.add(entry);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }else{
+        } else {
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntryDto> update(@PathVariable String id, @RequestBody EntryDto dto) {
-        Optional<EntryDto> entry= service.update(id, dto);
-        if (entry.isPresent()){
+        Optional<EntryDto> entry = service.update(id, dto);
+        if (entry.isPresent()) {
             return ResponseEntity.ok(entry.get());
-        }else{
+        } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Long> deleteById(@PathVariable Long id){
+    public ResponseEntity<Long> deleteById(@PathVariable Long id) {
         EntryDto dto = new EntryDto();
         dto.setId(id);
 

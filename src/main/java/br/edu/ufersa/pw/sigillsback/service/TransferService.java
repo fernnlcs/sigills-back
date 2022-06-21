@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
 import br.edu.ufersa.pw.sigillsback.DTO.TransferDto;
+import br.edu.ufersa.pw.sigillsback.entity.Account;
 import br.edu.ufersa.pw.sigillsback.entity.transition.Transfer;
 import br.edu.ufersa.pw.sigillsback.repository.transition.TransferRepository;
 
@@ -19,13 +21,52 @@ public class TransferService {
     
     @Autowired
     private TransferRepository repository;
+
+    @Autowired
+    private AccountService accountService;
+
     @Autowired
     private ModelMapper mapper;
 
     public List<TransferDto> findAll(){
+        List <TransferDto> result = this.findAllOut();
+        result.addAll(this.findAllIn());
+        return result;
+    }
+
+    public List<TransferDto> findAllIn(){
         List<TransferDto> list = new ArrayList<TransferDto>();
-        for (Transfer transfer :repository.findAll()) {
-            list.add(mapper.map(transfer,TransferDto.class));
+
+        List<Account> userAccounts = new ArrayList<Account>();
+
+        for (AccountDto accountDto : accountService.findAll()) {
+            userAccounts.add(mapper.map(accountDto, Account.class));
+        }
+
+        for (Account account : userAccounts) {
+            List<Transfer> accountTransfers = repository.findByDestiny(account);
+            for (Transfer transfer : accountTransfers) {
+                list.add(mapper.map(transfer, TransferDto.class));
+            }
+        }
+
+        return list;
+    }
+
+    public List<TransferDto> findAllOut(){
+        List<TransferDto> list = new ArrayList<TransferDto>();
+
+        List<Account> userAccounts = new ArrayList<Account>();
+
+        for (AccountDto accountDto : accountService.findAll()) {
+            userAccounts.add(mapper.map(accountDto, Account.class));
+        }
+
+        for (Account account : userAccounts) {
+            List<Transfer> accountTransfers = repository.findByOrigin(account);
+            for (Transfer transfer : accountTransfers) {
+                list.add(mapper.map(transfer, TransferDto.class));
+            }
         }
 
         return list;

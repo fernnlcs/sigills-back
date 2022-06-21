@@ -27,7 +27,7 @@ public class SigillsBackApplication {
 	}
 
 	@Bean
-	public ModelMapper mapper() {
+	ModelMapper mapper() {
 		return new ModelMapper();
 	}
 

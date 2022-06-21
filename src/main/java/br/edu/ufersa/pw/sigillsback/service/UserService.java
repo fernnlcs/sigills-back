@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,15 @@ public class UserService {
     @Autowired
     private ModelMapper mapper;
 
+    public User currentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getPrincipal().toString();
+
+        User user = repository.findByEmail(email);
+
+        return user;
+    }
+
     public UserDto findByEmail(String email){
         User user = repository.findByEmail(email);
         return mapper.map(user,UserDto.class);
@@ -40,8 +52,11 @@ public class UserService {
     public UserDto save(User users){
         User user = new User();
         user.setEmail(users.getEmail());
-        user.setPassword(users.getPassword());
         user.setName(users.getName());
+
+        String pass = (new BCryptPasswordEncoder()).encode(users.getPassword());
+
+        user.setPassword(pass);
 
         return mapper.map(repository.save(user),UserDto.class);
     }
@@ -51,9 +66,11 @@ public class UserService {
         if (user.isEmpty()) {
           return Optional.empty();
         }
+
+        String pass = (new BCryptPasswordEncoder()).encode(dto.getPassword());
     
         user.get().setName(dto.getName());
-        user.get().setPassword(dto.getPassword());
+        user.get().setPassword(pass);
     
         return Optional.of(mapper.map(repository.save(user.get()), UserDto.class));
     }

@@ -33,7 +33,7 @@ public class User {
     private String email;
 
     @NotBlank(message = "A senha não pode ficar em branco.")
-    @Size(min = 6, max = 20, message = "Digite uma senha entre 6 e 20 caracteres.")
+    @Size(min = 6, message = "Digite uma senha entre 6 e 20 caracteres.")
     private String password;
 
     @OneToMany(mappedBy = "user")

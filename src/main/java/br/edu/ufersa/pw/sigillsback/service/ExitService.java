@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
 import br.edu.ufersa.pw.sigillsback.DTO.ExitDto;
+import br.edu.ufersa.pw.sigillsback.entity.Account;
 import br.edu.ufersa.pw.sigillsback.entity.transition.Exit;
 import br.edu.ufersa.pw.sigillsback.repository.transition.ExitRepository;
 
@@ -19,13 +21,27 @@ public class ExitService {
     
     @Autowired
     private ExitRepository repository;
+
+    @Autowired
+    private AccountService accountService;
+
     @Autowired
     private ModelMapper mapper;
 
     public List<ExitDto> findAll(){
         List<ExitDto> list = new ArrayList<ExitDto>();
-        for (Exit exit :repository.findAll()) {
-            list.add(mapper.map(exit,ExitDto.class));
+
+        List<Account> userAccounts = new ArrayList<Account>();
+
+        for (AccountDto accountDto : accountService.findAll()) {
+            userAccounts.add(mapper.map(accountDto, Account.class));
+        }
+
+        for (Account account : userAccounts) {
+            List<Exit> accountExits = repository.findByAccount(account);
+            for (Exit exit : accountExits) {
+                list.add(mapper.map(exit, ExitDto.class));
+            }
         }
 
         return list;

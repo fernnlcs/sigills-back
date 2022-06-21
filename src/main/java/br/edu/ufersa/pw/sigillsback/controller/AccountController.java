@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.pw.sigillsback.DTO.AccountDto;
+import br.edu.ufersa.pw.sigillsback.DTO.CreateAccountDto;
 import br.edu.ufersa.pw.sigillsback.entity.Account;
 import br.edu.ufersa.pw.sigillsback.service.AccountService;
 
@@ -45,8 +46,13 @@ public class AccountController {
     }
     
     @PostMapping
-    public ResponseEntity<AccountDto> add(@Valid @RequestBody Account account){
-        AccountDto dto = service.add(account);
+    public ResponseEntity<AccountDto> add(@Valid @RequestBody CreateAccountDto account){
+
+        Account entity = new Account();
+        entity.setName(account.getName());
+        entity.setType(account.getType());
+
+        AccountDto dto = service.add(entity);
 
         if (dto == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
